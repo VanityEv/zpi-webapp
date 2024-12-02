@@ -6,6 +6,7 @@ import useAxios from '../../hooks/useAxios';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { setCookie } from 'typescript-cookie';
+import { AxiosError } from 'axios';
 
 export const LoginPanel = () => {
   const { axiosRequest } = useAxios();
@@ -35,8 +36,13 @@ export const LoginPanel = () => {
       const response = await axiosRequest('POST', 'auth/authenticate', data);
       toast.success('Login successful!');
       setCookie('token', response?.data.access_token)
-    } catch (err) {
-      toast.error('Incorrect email or password!')
+    } catch (error) {
+      if(error instanceof AxiosError) {
+        toast.error(error.response?.data.message || 'An error occurred while logging in.')
+      }
+      else {
+        toast.error('An error occurred while logging in.')
+      }
     }
   };
 

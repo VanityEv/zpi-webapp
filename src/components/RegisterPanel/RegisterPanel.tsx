@@ -1,3 +1,4 @@
+
 import { Box, Typography, Stack, TextField, Button, Link } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -6,6 +7,7 @@ import useAxios from '../../hooks/useAxios';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { setCookie } from 'typescript-cookie'
+import { AxiosError } from 'axios';
 
 export const RegisterPanel = () => {
   const { axiosRequest } = useAxios();
@@ -35,14 +37,18 @@ export const RegisterPanel = () => {
   });
 
   const onSubmit = async (data: Schema) => {
-    try {
-      const response = await axiosRequest('POST', 'auth/register', data);
-      toast.success('Registration successful!');
-      console.log(response)
-      setCookie('token', response?.data.access_token)
-    } catch (err) {
-      toast.error('Error submitting request')
+  try {
+    const response = await axiosRequest( "POST", "auth/register", data);
+    toast.success("Registration successful!");
+    setCookie('token', response?.data.token);
+  } catch (error) {
+    if(error instanceof AxiosError) {
+      toast.error(error.response?.data)
     }
+    else {
+    toast.error("Registration failed!");
+    }
+  }
   };
 
   return (
