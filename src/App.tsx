@@ -3,6 +3,7 @@ import { Box, createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { Register } from './views/Register';
 import { Login } from './views/Login';
 import { useMemo } from 'react';
+import { Home } from './views/Home';
 
 function App() {
   const theme = useMemo(
@@ -54,6 +55,7 @@ function App() {
       <Box sx={{ width: '100vw', height: '100vh' }}>
         <Router>
           <Routes>
+            <Route path="/" element={<Home/>}/>
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
           </Routes>
