@@ -1,4 +1,4 @@
-import { Box, Paper } from "@mui/material"
+import { Box } from "@mui/material"
 import { LoginPanel } from "../components/LoginPanel/LoginPanel"
 import { ToastContainer } from "react-toastify"
 
