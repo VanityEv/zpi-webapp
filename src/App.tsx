@@ -4,6 +4,10 @@ import { Register } from './views/Register';
 import { Login } from './views/Login';
 import { useMemo } from 'react';
 import { Home } from './views/Home';
+import { FormCreate } from './views/form/FormCreate';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+
 
 function App() {
   const theme = useMemo(
@@ -51,16 +55,19 @@ function App() {
   );
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ width: '100vw', height: '100vh' }}>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home/>}/>
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-          </Routes>
-        </Router>
-      </Box>
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <CssBaseline />
+        <Box sx={{ width: '100vw', height: '100vh' }}>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
+              <Route path="/form/create" element={<FormCreate />} />
+            </Routes>
+          </Router>
+        </Box>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 }

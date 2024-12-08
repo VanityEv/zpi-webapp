@@ -37,7 +37,7 @@ export const LoginPanel = () => {
       toast.success('Login successful!');
       setCookie('token', response?.data.access_token)
     } catch (error) {
-      if(error instanceof AxiosError) {
+      if (error instanceof AxiosError) {
         toast.error(error.response?.data.message || 'An error occurred while logging in.')
       }
       else {
