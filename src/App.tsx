@@ -4,6 +4,7 @@ import { Register } from './views/Register';
 import { Login } from './views/Login';
 import { useMemo } from 'react';
 import { Home } from './views/Home';
+import { Statistics } from './views/Statistics';
 import { FormCreate } from './views/form/FormCreate';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -19,6 +20,7 @@ function App() {
               root: {
                 color: 'white',
                 display: 'flex',
+                backgroundColor:'#1976d2',
                 flexWrap: 'nowrap',
                 height: '3rem',
                 borderColor: '#e51445',
@@ -38,7 +40,7 @@ function App() {
           MuiPaper: {
             styleOverrides: {
               root: {
-                backgroundColor: '#FFFBF5',
+                backgroundColor: '#FFFFFF',
               },
             },
           },
@@ -64,6 +66,7 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path="/form/create" element={<FormCreate />} />
+              <Route path='/statistics' element={<Statistics/>} />
             </Routes>
           </Router>
         </Box>
