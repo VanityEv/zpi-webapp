@@ -112,14 +112,6 @@ export const CreateFormPanel = () => {
                 variant="outlined"
                 color="success"
                 onClick={handleCreateAnother}
-                sx={{
-                    borderColor: 'green',
-                    color: 'green',
-                    ':hover': {
-                        borderColor: 'darkgreen',
-                        backgroundColor: 'rgba(0, 128, 0, 0.04)',
-                    },
-                }}
             >
                 Create Another Form
             </Button>
