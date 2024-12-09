@@ -33,7 +33,16 @@ export const Home = () => {
                     >
                         Login
                     </Button>
-                    <Button
+                                        <Button
+                        variant="contained"
+                        color="primary"
+                        component={Link}
+                        to="/statistics"
+                        sx={{ width: '100%', px: '2rem' }}
+                    >
+                        Statistics
+                    </Button>
+                                        <Button
                         variant="contained"
                         color="primary"
                         component={Link}

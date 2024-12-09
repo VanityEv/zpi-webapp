@@ -184,18 +184,10 @@ export const CreateFormPanel = () => {
             ))}
 
             <Button
-                variant="outlined"
+                variant="contained"
                 startIcon={<AddIcon />}
                 onClick={() => append({ value: '' })}
                 color="success"
-                sx={{
-                    borderColor: 'green',
-                    color: 'green',
-                    ':hover': {
-                        borderColor: 'darkgreen',
-                        backgroundColor: 'rgba(0, 128, 0, 0.04)',
-                    },
-                }}
             >
                 Add Question
             </Button>
