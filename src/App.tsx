@@ -59,7 +59,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <CssBaseline />
-        <Box sx={{ width: '100vw', height: '100vh' }}>
+        <Box sx={{ width: '100vw', height: '100vh', overflowX:'hidden' }}>
           <Router>
             <Routes>
               <Route path="/" element={<Home />} />
