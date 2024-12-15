@@ -10,7 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import moment from 'moment';
-import { getAuthHeader } from '../../utils/utils';
+import { getAuthHeader, getUserEmail } from '../../utils/utils';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ export const CreateFormPanel = () => {
     const { axiosRequest } = useAxios();
     const navigate = useNavigate();
     const [isFormCreated, setIsFormCreated] = useState(false);
+    const [formLink, setFormLink] = useState<string | null>(null);
 
     const now = new Date();
     const oneYearFromNow = new Date();
@@ -70,10 +71,12 @@ export const CreateFormPanel = () => {
                 ...data,
                 closingTime: data.closingTime.toISOString(),
                 questions: data.questions.map(q => q.value),
+                userEmail: getUserEmail()
             };
-            await axiosRequest("POST", "forms", payload, getAuthHeader());
+            const response = await axiosRequest("POST", "forms", payload, getAuthHeader());
             toast.success("Form created successfully!");
             setIsFormCreated(true);
+            setFormLink(response?.data.formLink);
         } catch (error) {
             if (error instanceof AxiosError) {
                 toast.error(error.response?.data);
@@ -90,33 +93,44 @@ export const CreateFormPanel = () => {
             questions: [{ value: '' }]
         });
         setIsFormCreated(false);
+        setFormLink(null);
     }
 
     const handleReturnHome = () => {
         navigate('/');
     }
 
-    const renderSuccess = () => (
-        <>
-            <Typography variant="h6" color="success.main">
-                Your form was created successfully!
-            </Typography>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleReturnHome}
-            >
-                Go to Home Page
-            </Button>
-            <Button
-                variant="outlined"
-                color="success"
-                onClick={handleCreateAnother}
-            >
-                Create Another Form
-            </Button>
-        </>
-    )
+    const renderSuccess = () => {
+        const fullLink = formLink ? `${window.location.origin}/form/${formLink}` : null;
+
+        return (
+            <>
+                <Typography variant="h6" color="success.main" sx={{ mb: 2 }}>
+                    Your form was created successfully!
+                </Typography>
+                {fullLink && (
+                    <Typography variant="body1" sx={{ mb: 2 }}>
+                        You can view your form here: <a href={fullLink} target="_blank" rel="noopener noreferrer">{fullLink}</a>
+                    </Typography>
+                )}
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleReturnHome}
+                    sx={{ mr: 2 }}
+                >
+                    Go to Home Page
+                </Button>
+                <Button
+                    variant="outlined"
+                    color="success"
+                    onClick={handleCreateAnother}
+                >
+                    Create Another Form
+                </Button>
+            </>
+        )
+    }
 
     const renderForm = () => (
         <>

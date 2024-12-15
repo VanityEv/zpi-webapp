@@ -8,3 +8,7 @@ export const getAuthHeader = () => {
     },
   };
 }
+
+export const getUserEmail = () => {
+  return Cookies.get('email');
+}
