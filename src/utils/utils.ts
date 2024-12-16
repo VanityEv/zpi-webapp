@@ -1,4 +1,4 @@
-import { Cookies } from "typescript-cookie";
+import { Cookies } from 'typescript-cookie';
 
 export const getAuthHeader = () => {
   const token = Cookies.get('token');
@@ -7,8 +7,8 @@ export const getAuthHeader = () => {
       Authorization: `Bearer ${token}`,
     },
   };
-}
+};
 
 export const getUserEmail = () => {
   return Cookies.get('email');
-}
+};

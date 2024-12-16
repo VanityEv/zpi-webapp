@@ -33,7 +33,7 @@ type Answer = {
 export const FormPanel = ({ formID }: FormPanelProps) => {
   const { axiosRequest } = useAxios();
   const [formData, setFormData] = useState<FormResponse | null>(null);
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Added
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const FormSchema = z.object({
     answers: z.array(
@@ -59,12 +59,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
   useEffect(() => {
     const fetchForm = async () => {
       try {
-        const response = await axiosRequest(
-          'GET',
-          `forms/${formID}`,
-          undefined,
-          getAuthHeader()
-        );
+        const response = await axiosRequest('GET', `forms/${formID}`, undefined, getAuthHeader());
         const data = response?.data;
         setFormData(data);
 
@@ -89,7 +84,6 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
 
   const onSubmit = async (data: { answers: { answer: string }[] }) => {
     try {
-      // Reconstruct the answers array to include questionId
       const answersWithIds = data.answers.map((answerObj, index) => ({
         questionId: formData!.questions[index].id,
         answer: answerObj.answer,
@@ -102,7 +96,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
 
       await axiosRequest('POST', `forms/${formID}`, payload, getAuthHeader());
       toast.success('Form submitted successfully!');
-      setIsFormSubmitted(true); // Added
+      setIsFormSubmitted(true);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data || 'Failed to submit form.');
@@ -129,7 +123,6 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
   }
 
   if (isFormSubmitted) {
-    // Success message after form submission
     return (
       <Box
         sx={{
@@ -143,12 +136,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
         <Typography variant="h6" color="success.main" sx={{ mb: 2 }}>
           Your responses have been submitted successfully!
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          href="/"
-          sx={{ mt: 2, px: 8 }}
-        >
+        <Button variant="contained" color="primary" href="/" sx={{ mt: 2, px: 8 }}>
           Go to Home Page
         </Button>
       </Box>
@@ -159,25 +147,27 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
     <Box
       sx={{
         display: 'flex',
-        height: '100%',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         mt: 3,
+        m: 'auto',
+        width: '100%',
+        maxWidth: { xs: '85%', sm: '50%' },
+        px: 2,
+        minHeight: '100vh',
       }}
     >
-      <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
+      <Typography component="h1" variant="h5" sx={{ mt: 4, mb: 2, textAlign: 'center' }}>
         {formData.title}
       </Typography>
-      <Box
-        component="form"
-        noValidate
-        onSubmit={handleSubmit(onSubmit)}
-        sx={{ width: { xs: '75%', md: '50%' } }}
-      >
-        <Stack spacing={3}>
+
+      <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ width: '100%' }}>
+        <Stack spacing={3} alignItems="stretch" mb={4}>
+          {' '}
+          {/* Ensure full width of questions */}
           {formData.questions.map((question, index) => (
-            <Box key={question.id}>
+            <Box key={question.id} sx={{ width: '100%' }}>
               <Typography variant="h6" sx={{ mb: 1 }}>
                 {index + 1}. {question.question}
               </Typography>
@@ -192,6 +182,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
                     rows={4}
                     variant="outlined"
                     required
+                    placeholder="Type your answer here"
                     error={Boolean(errors.answers?.[index]?.answer)}
                     helperText={errors.answers?.[index]?.answer?.message}
                   />
@@ -199,14 +190,22 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
               />
             </Box>
           ))}
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={isSubmitting}
-            sx={{ mt: 2, px: 8 }}
-          >
-            Submit
-          </Button>
+          <Box sx={{ mb: 3 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={isSubmitting}
+              sx={{
+                mt: 2,
+                px: 8,
+                width: { xs: '80%', sm: 'auto' }, // Button width for different screen sizes
+                m: 'auto',
+                display: 'block',
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
         </Stack>
       </Box>
     </Box>

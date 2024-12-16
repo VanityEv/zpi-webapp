@@ -1,12 +1,11 @@
-
 import { Box, Typography, Stack, TextField, Button, Link } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAxios from '../../hooks/useAxios';
 import { toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
-import { setCookie } from 'typescript-cookie'
+import 'react-toastify/dist/ReactToastify.css';
+import { setCookie } from 'typescript-cookie';
 import { AxiosError } from 'axios';
 
 export const RegisterPanel = () => {
@@ -37,18 +36,17 @@ export const RegisterPanel = () => {
   });
 
   const onSubmit = async (data: Schema) => {
-  try {
-    const response = await axiosRequest( "POST", "auth/register", data);
-    toast.success("Registration successful!");
-    setCookie('token', response?.data.token);
-  } catch (error) {
-    if(error instanceof AxiosError) {
-      toast.error(error.response?.data)
+    try {
+      const response = await axiosRequest('POST', 'auth/register', data);
+      toast.success('Registration successful!');
+      setCookie('token', response?.data.token);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data);
+      } else {
+        toast.error('Registration failed!');
+      }
     }
-    else {
-    toast.error("Registration failed!");
-    }
-  }
   };
 
   return (
@@ -117,12 +115,7 @@ export const RegisterPanel = () => {
             type="password"
             {...register('password')}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={isSubmitting}
-            sx={{ mt: 3, mb: 2, px: 8 }}
-          >
+          <Button type="submit" variant="contained" disabled={isSubmitting} sx={{ mt: 3, mb: 2, px: 8 }}>
             Register
           </Button>
           <Link href="/login" variant="body1">

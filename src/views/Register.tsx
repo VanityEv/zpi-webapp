@@ -1,6 +1,6 @@
-import { Box } from "@mui/material"
-import { RegisterPanel } from "../components/RegisterPanel/RegisterPanel"
-import { ToastContainer } from "react-toastify"
+import { Box } from '@mui/material';
+import { RegisterPanel } from '../components/RegisterPanel/RegisterPanel';
+import { ToastContainer } from 'react-toastify';
 
 export const Register = () => {
   return (
@@ -8,5 +8,5 @@ export const Register = () => {
       <RegisterPanel />
       <ToastContainer />
     </Box>
-  )
-}
+  );
+};

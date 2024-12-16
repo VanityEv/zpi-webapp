@@ -10,7 +10,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { Form } from './views/form/Form';
 
-
 function App() {
   const theme = useMemo(
     () =>
@@ -48,10 +47,63 @@ function App() {
           MuiTextField: {
             styleOverrides: {
               root: {
-                width: '100%'
-              }
-            }
-          }
+                width: '100%',
+              },
+            },
+          },
+          MuiDialogContent: {
+            styleOverrides: {
+              root: {
+                '& .MuiButton-root': {
+                  backgroundColor: 'white',
+                },
+                '& .MuiDateTimePickerToolbar-separator': {
+                  fontSize: '2.5rem',
+                },
+              },
+            },
+          },
+          MuiDialogActions: {
+            styleOverrides: {
+              root: {
+                display: 'flex',
+                gap: '1rem',
+                justifyContent: 'center',
+                '& .MuiButton-root': {
+                  backgroundColor: '#1976d2',
+                  padding: '1rem 1.5rem',
+                },
+              },
+            },
+          },
+          MuiCssBaseline: {
+            styleOverrides: {
+              body: {
+                scrollbarColor: '#cccccc #eeeeee',
+                '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+                  backgroundColor: '#2b2b2b',
+                },
+                '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+                  borderRadius: 8,
+                  backgroundColor: '#dddddd',
+                  minHeight: 24,
+                  border: '3px solid #2b2b2b',
+                },
+                '&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus': {
+                  backgroundColor: '#959595',
+                },
+                '&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active': {
+                  backgroundColor: '#959595',
+                },
+                '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover': {
+                  backgroundColor: '#959595',
+                },
+                '&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner': {
+                  backgroundColor: '#2b2b2b',
+                },
+              },
+            },
+          },
         },
       }),
     []
@@ -64,10 +116,10 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/form/create" element={<FormCreate />} />
-              <Route path='/statistics' element={<Statistics />} />
+              <Route path="/statistics" element={<Statistics />} />
               <Route path="/form/:formID" element={<Form />} />
             </Routes>
           </Router>

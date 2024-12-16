@@ -1,28 +1,26 @@
 import { BarChart } from '@mui/x-charts/BarChart';
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 
 export default function AnswersChart() {
   const [mockData, setData] = useState<number[][]>([
-    [10, 12, 15, 7], 
-    [18, 14, 9, 11], 
-    [13, 9, 8, 14],  
+    [10, 12, 15, 7],
+    [18, 14, 9, 11],
+    [13, 9, 8, 14],
     [16, 12, 10, 15],
-    [11, 8, 17, 13], 
-    [9, 10, 13, 15], 
+    [11, 8, 17, 13],
+    [9, 10, 13, 15],
     [12, 18, 11, 9],
   ]);
 
   const randomizeData = () => {
-    setData(
-      Array.from({ length: 7 }, () =>
-        Array.from({ length: 4 }, () => Math.floor(Math.random() * 20) + 1) 
-      )
-    );
+    setData(Array.from({ length: 7 }, () => Array.from({ length: 4 }, () => Math.floor(Math.random() * 20) + 1)));
   };
 
+  const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
   return (
-    <Box sx={{ width: '100%', height: '100%', p: '5rem' }}>
+    <Box sx={{ width: '100%', height: '100%', p: { xs: '0', md: '5rem' } }}>
       <Typography variant="h5" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         Answers Chart
       </Typography>
@@ -34,26 +32,18 @@ export default function AnswersChart() {
           xAxis={[
             {
               id: 'questions',
-              data: [
-                'Question 1',
-                'Question 2',
-                'Question 3',
-                'Question 4',
-                'Question 5',
-                'Question 6',
-                'Question 7',
-              ],
-              scaleType: 'band', 
+              data: ['Question 1', 'Question 2', 'Question 3', 'Question 4', 'Question 5', 'Question 6', 'Question 7'],
+              scaleType: 'band',
             },
           ]}
           series={[
-            { data: mockData.map((q) => q[0]), label: 'A' }, 
-            { data: mockData.map((q) => q[1]), label: 'B' },
-            { data: mockData.map((q) => q[2]), label: 'C' }, 
-            { data: mockData.map((q) => q[3]), label: 'D' }, 
+            { data: mockData.map(q => q[0]), label: 'A' },
+            { data: mockData.map(q => q[1]), label: 'B' },
+            { data: mockData.map(q => q[2]), label: 'C' },
+            { data: mockData.map(q => q[3]), label: 'D' },
           ]}
-          width={1000}
-          height={500}
+          width={isSmallScreen ? 425 : 1000}
+          height={isSmallScreen ? 350 : 500}
         />
       </Box>
     </Box>

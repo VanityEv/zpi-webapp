@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAxios from '../../hooks/useAxios';
 import { toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+import 'react-toastify/dist/ReactToastify.css';
 import { setCookie } from 'typescript-cookie';
 import { AxiosError } from 'axios';
 
@@ -35,14 +35,13 @@ export const LoginPanel = () => {
     try {
       const response = await axiosRequest('POST', 'auth/authenticate', data);
       toast.success('Login successful!');
-      setCookie('token', response?.data.access_token)
-      setCookie('email', response?.data.email)
+      setCookie('token', response?.data.access_token);
+      setCookie('email', response?.data.email);
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message || 'An error occurred while logging in.')
-      }
-      else {
-        toast.error('An error occurred while logging in.')
+        toast.error(error.response?.data.message || 'An error occurred while logging in.');
+      } else {
+        toast.error('An error occurred while logging in.');
       }
     }
   };
