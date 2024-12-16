@@ -7,9 +7,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setCookie } from 'typescript-cookie';
 import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPanel = () => {
   const { axiosRequest } = useAxios();
+  const navigate = useNavigate();
 
   const FormSchema = z.object({
     email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -37,6 +39,7 @@ export const LoginPanel = () => {
       toast.success('Login successful!');
       setCookie('token', response?.data.access_token);
       setCookie('email', response?.data.email);
+      navigate('/');
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message || 'An error occurred while logging in.');

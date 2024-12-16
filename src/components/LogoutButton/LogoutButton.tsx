@@ -1,19 +1,15 @@
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getCookie, removeCookie } from 'typescript-cookie';
+import { removeCookie } from 'typescript-cookie';
 
 export const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     removeCookie('token');
-    if(!getCookie){
-        toast.success('You are Logged Out!');
-    }
+    toast.success('Logged out!');
     navigate('/login');
-    
-    
   }
 
   return (
