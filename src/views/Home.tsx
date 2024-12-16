@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
 import { Container, Typography, Button, Box } from '@mui/material';
+import { LogoutButton } from '../components/LogoutButton/LogoutButton';
 
 export const Home = () => {
   return (
@@ -33,6 +34,7 @@ export const Home = () => {
           >
             Create Form
           </Button>
+          <LogoutButton/>
         </Box>
       </Box>
     </Container>
