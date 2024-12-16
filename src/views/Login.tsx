@@ -1,5 +1,5 @@
-import { Box } from "@mui/material"
-import { LoginPanel } from "../components/LoginPanel/LoginPanel"
+import { Box } from '@mui/material';
+import { LoginPanel } from '../components/LoginPanel/LoginPanel';
 
 export const Login = () => {
   return (

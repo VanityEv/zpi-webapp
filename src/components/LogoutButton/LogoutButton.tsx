@@ -10,7 +10,7 @@ export const LogoutButton = () => {
     removeCookie('token');
     toast.success('Logged out!');
     navigate('/login');
-  }
+  };
 
   return (
     <Button variant="contained" color="secondary" onClick={handleLogout}>

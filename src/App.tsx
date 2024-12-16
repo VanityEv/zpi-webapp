@@ -8,8 +8,8 @@ import { Statistics } from './views/Statistics';
 import { FormCreate } from './views/form/FormCreate';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { Form } from './views/form/Form';import { ToastContainer } from 'react-toastify';
-
+import { Form } from './views/form/Form';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const theme = useMemo(
@@ -124,7 +124,7 @@ function App() {
               <Route path="/form/:formID" element={<Form />} />
             </Routes>
           </Router>
-          <ToastContainer/>
+          <ToastContainer />
         </Box>
       </LocalizationProvider>
     </ThemeProvider>
