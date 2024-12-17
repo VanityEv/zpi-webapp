@@ -1,4 +1,4 @@
-import { Box, Typography, Stack, TextField, Button, IconButton } from '@mui/material';
+import { Box, Typography, Stack, TextField, Button, IconButton, Link } from '@mui/material';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -106,12 +106,16 @@ export const CreateFormPanel = () => {
           Your form was created successfully!
         </Typography>
         {fullLink && (
+          <Box sx={{textAlign:'center'}}>
           <Typography variant="body1" sx={{ mb: 2 }}>
-            You can view your form here:{' '}
-            <a href={fullLink} target="_blank" rel="noopener noreferrer">
+            You can view your form here:
+            </Typography>
+            <Typography>
+            <Link href={fullLink} target="_blank" rel="noopener noreferrer">
               {fullLink}
-            </a>
+            </Link>
           </Typography>
+          </Box>
         )}
         <Button variant="contained" color="primary" onClick={handleReturnHome} sx={{ mr: 2 }}>
           Go to Home Page
