@@ -12,8 +12,8 @@ export const RegisterPanel = () => {
   const { axiosRequest } = useAxios();
 
   const FormSchema = z.object({
-    firstName: z.string().min(2, { message: 'Please enter a valid first name.' }),
-    lastName: z.string().min(2, { message: 'Please enter a valid last name.' }),
+    firstname: z.string().min(2, { message: 'Please enter a valid first name.' }),
+    lastname: z.string().min(2, { message: 'Please enter a valid last name.' }),
     email: z.string().email({ message: 'Please enter a valid email address.' }),
     password: z.string().min(6, { message: 'Password must be at least 6 characters long.' }),
   });
@@ -27,8 +27,8 @@ export const RegisterPanel = () => {
   } = useForm<Schema>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      firstname: '',
+      lastname: '',
       email: '',
       password: '',
     },
@@ -42,7 +42,7 @@ export const RegisterPanel = () => {
       setCookie('token', response?.data.token);
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       } else {
         toast.error('Registration failed!');
       }
@@ -80,20 +80,20 @@ export const RegisterPanel = () => {
           <TextField
             aria-label="firstname-field"
             required
-            error={Boolean(errors.firstName)}
-            helperText={errors.firstName?.message}
-            id="firstName"
+            error={Boolean(errors.firstname)}
+            helperText={errors.firstname?.message}
+            id="firstname"
             label="First Name"
-            {...register('firstName')}
+            {...register('firstname')}
           />
           <TextField
             aria-label="lastname-field"
             required
-            error={Boolean(errors.lastName)}
-            helperText={errors.lastName?.message}
-            id="lastName"
+            error={Boolean(errors.lastname)}
+            helperText={errors.lastname?.message}
+            id="lastname"
             label="Last Name"
-            {...register('lastName')}
+            {...register('lastname')}
           />
           <TextField
             aria-label="email-field"
