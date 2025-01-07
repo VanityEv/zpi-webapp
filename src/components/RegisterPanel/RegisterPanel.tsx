@@ -54,6 +54,7 @@ export const RegisterPanel = () => {
       sx={{
         display: 'flex',
         height: '100%',
+        width:'100%',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
@@ -66,7 +67,7 @@ export const RegisterPanel = () => {
         component="form"
         noValidate
         onSubmit={handleSubmit(onSubmit)}
-        sx={{ mt: 3, pb: 2, width: { xs: '75%', md: '20%' } }}
+        sx={{ mt: 3, pb: 2, width: { xs: '75%', md: '30%' } }}
       >
         <Stack
           spacing={3}

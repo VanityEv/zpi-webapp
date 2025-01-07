@@ -10,7 +10,7 @@ const useAxios = <T = any, U = any>() => {
 
   const axiosRequest = useCallback(
     async (
-      method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+      method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
       endpoint: string,
       payload?: U,
       config?: AxiosRequestConfig
@@ -34,6 +34,9 @@ const useAxios = <T = any, U = any>() => {
             break;
           case 'DELETE':
             response = await axios.delete<T>(url, config);
+            break;
+          case 'PATCH':
+            response = await axios.patch<T>(url, payload, config);
             break;
           default:
             throw new Error('Unsupported HTTP method');

@@ -46,6 +46,15 @@ h1 {
   line-height: 1.1;
 }
 
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;

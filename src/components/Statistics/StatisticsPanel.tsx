@@ -1,14 +1,33 @@
-import { Box, Button, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 import { SurveyCounter } from './SurverysCounter';
 import AnswersChart from './AnswersChart';
 import SurveysPerDayChart from './SurveyPerDayChart';
 import QuestionList from './QuestionList';
 import SurveyPieChart from './SurveyPieChart';
 import { ageData, genderData } from './pieChart.data';
+import { ApplicationBar } from '../AppBar/AppBar';
+import useAxios from '../../hooks/useAxios';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { getAuthHeader } from '../../utils/utils';
 
 export const StatisticsPanel = () => {
+
+  const {axiosRequest} = useAxios();
+  const params = useParams();
+  const formId = params.formID;
+
+
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      const response = await axiosRequest('GET', `forms/${formId}/answers`, null, getAuthHeader());
+      console.log(response?.data);
+    }
+    fetchStatistics();
+  }, [axiosRequest, formId]);
   return (
+    <>
+    <ApplicationBar/>
     <Box
       sx={{
         display: 'flex',
@@ -44,15 +63,7 @@ export const StatisticsPanel = () => {
         <SurveyPieChart title="Gender of respondents" data={genderData} />
         <SurveyPieChart title="Age group of respondents" data={ageData} />
       </Box>
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link}
-        to="/"
-        sx={{ width: '10rem', px: '2rem', my: '3rem' }}
-      >
-        Return Home
-      </Button>
     </Box>
+    </>
   );
 };
