@@ -10,6 +10,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { Form } from './views/form/Form';
 import { ToastContainer } from 'react-toastify';
+import { Responses } from './views/Responses';
+import { ManageUsers } from './views/ManageUsers';
 
 function App() {
   const theme = useMemo(
@@ -120,11 +122,13 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/form/create" element={<FormCreate />} />
-              <Route path="/statistics" element={<Statistics />} />
+              <Route path="/statistics/:formID" element={<Statistics />} />
               <Route path="/form/:formID" element={<Form />} />
+              <Route path="/responses" element={<Responses />} />
+              <Route path="/manage-users" element={<ManageUsers/>}/>
             </Routes>
           </Router>
-          <ToastContainer />
+          <ToastContainer position='bottom-right' />
         </Box>
       </LocalizationProvider>
     </ThemeProvider>

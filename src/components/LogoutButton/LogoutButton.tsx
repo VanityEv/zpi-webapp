@@ -13,7 +13,7 @@ export const LogoutButton = () => {
   };
 
   return (
-    <Button variant="contained" color="secondary" onClick={handleLogout}>
+    <Button color="secondary" onClick={handleLogout}>
       Logout
     </Button>
   );
