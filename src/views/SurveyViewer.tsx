@@ -29,12 +29,39 @@ export const SurveyViewer = ({ questions, answersData, readOnly, requestedByUser
 
   const emails = Array.from(new Set(answersData.map(answer => answer.respondentData.userEmail)));
 
-  const getAnswerForQuestion = (questionId: string, email: string) => {
-    const answer = answersData.find(
-      a => a.respondentData.userEmail === email && a.formAnswers.some(fa => fa.questionId === questionId)
-    );
-    return answer?.formAnswers.find(fa => fa.questionId === questionId)?.chosenAnswerIndexes ?? [];
-  };
+const getAnswerForQuestion = (
+  questionId: string,
+  email: string,
+  questionType: 'SINGLE' | 'MULTIPLE' | 'FREETEXT'
+) => {
+  const answer = answersData.find(
+    a => a.respondentData.userEmail === email && a.formAnswers.some(fa => fa.questionId === questionId)
+  );
+
+  if (!answer) {
+    console.log(`No answer found for email: ${email}, questionId: ${questionId}`);
+    return questionType === 'FREETEXT' ? '' : []; 
+  }
+
+  const formAnswer = answer.formAnswers.find(fa => fa.questionId === questionId);
+
+  if (!formAnswer) {
+    console.log(`No formAnswer found for questionId: ${questionId}`);
+    return questionType === 'FREETEXT' ? '' : []; 
+  }
+
+  console.log(`Found formAnswer for questionId: ${questionId}`, formAnswer);
+
+  if (questionType === 'SINGLE' || questionType === 'MULTIPLE') {
+    return formAnswer.chosenAnswerIndexes ?? []; 
+  } else if (questionType === 'FREETEXT') {
+    return formAnswer.freetextAnswer || ''; 
+  }
+
+  return ''; 
+};
+
+
 
   const handleEmailChange = (value: string) => {
     setSelectedEmail(value);
@@ -79,45 +106,47 @@ export const SurveyViewer = ({ questions, answersData, readOnly, requestedByUser
                     {question.questionText}
                   </Typography>
 
-                  {question.questionType === 'SINGLE' && (
-                    <FormControl component="fieldset" fullWidth>
-                      <RadioGroup value={getAnswerForQuestion(question.id, selectedEmail).toString()}>
-                        {question.possibleAnswers.map((answer, index) => (
-                          <FormControlLabel
-                            key={index}
-                            value={index.toString()}
-                            control={<Radio disabled={readOnly} />}
-                            label={answer}
-                          />
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                  )}
-
-                  {question.questionType === 'MULTIPLE' && (
-                    <FormControl component="fieldset" fullWidth>
+                {question.questionType === 'SINGLE' && (
+                  <FormControl component="fieldset" fullWidth>
+                    <RadioGroup
+                      value={getAnswerForQuestion(question.id, selectedEmail, question.questionType)?.toString() || '-1'}
+                    >
                       {question.possibleAnswers.map((answer, index) => (
                         <FormControlLabel
                           key={index}
-                          control={
-                            <Checkbox
-                              checked={getAnswerForQuestion(question.id, selectedEmail).includes(index)}
-                              disabled={readOnly}
-                            />
-                          }
+                          value={index.toString()}
+                          control={<Radio disabled={readOnly} />}
                           label={answer}
                         />
                       ))}
-                    </FormControl>
-                  )}
+                    </RadioGroup>
+                  </FormControl>
+                )}    
 
-                  {question.questionType === 'FREETEXT' && (
-                    <Box>
-                      <Typography variant="body1" color="textSecondary">
-                        {getAnswerForQuestion(question.id, selectedEmail)[0] || 'No answer provided'}
-                      </Typography>
-                    </Box>
-                  )}
+                {question.questionType === 'MULTIPLE' && (
+                  <FormControl component="fieldset" fullWidth>
+                    {question.possibleAnswers.map((answer, index) => (
+                      <FormControlLabel
+                        key={index}
+                        control={
+                          <Checkbox
+                            checked={(getAnswerForQuestion(question.id, selectedEmail, question.questionType) as number[]).includes(index)}
+                            disabled={readOnly}
+                          />
+                        }
+                        label={answer}
+                      />
+                    ))}
+                  </FormControl>
+                )}
+
+                {question.questionType === 'FREETEXT' && (
+                  <Box>
+                    <Typography variant="body1" color="textSecondary">
+                      {getAnswerForQuestion(question.id, selectedEmail, question.questionType) || 'No answer provided'}
+                    </Typography>
+                  </Box>
+                )}
                 </Box>
               ))}
             </Box>

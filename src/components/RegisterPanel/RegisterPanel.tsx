@@ -9,9 +9,11 @@ import { setCookie } from 'typescript-cookie';
 import { AxiosError } from 'axios';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 export const RegisterPanel = () => {
   const { axiosRequest } = useAxios();
+  const navigate = useNavigate();
 
   const FormSchema = z.object({
     firstname: z.string().min(2, { message: 'Please enter a valid first name.' }),
@@ -55,6 +57,7 @@ export const RegisterPanel = () => {
       const response = await axiosRequest('POST', 'auth/register', payload);
       toast.success('Registration successful!');
       setCookie('token', response?.data.token);
+      navigate('/login');
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
