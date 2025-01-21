@@ -12,7 +12,6 @@ export const Home = () => {
   const navigate = useNavigate();
   const [userSurveysData, setUserSurveysData] = useState<SurveyOverviewProps[]>([]);
   const { axiosRequest } = useAxios();
-  console.log(userSurveysData)
 
   const fetchUserSurveys = useCallback(async () => {
     try {
