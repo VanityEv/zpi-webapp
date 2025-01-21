@@ -53,7 +53,6 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
 
     if (response?.status === 200) {
       toast.success('Closing date changed!');
-      console.log(newEndDate);
 
       const formattedDate = moment(newEndDate).format('DD-MM-YYYY');
       setClosingDate(formattedDate);

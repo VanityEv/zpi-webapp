@@ -39,18 +39,14 @@ const getAnswerForQuestion = (
   );
 
   if (!answer) {
-    console.log(`No answer found for email: ${email}, questionId: ${questionId}`);
     return questionType === 'FREETEXT' ? '' : []; 
   }
 
   const formAnswer = answer.formAnswers.find(fa => fa.questionId === questionId);
 
   if (!formAnswer) {
-    console.log(`No formAnswer found for questionId: ${questionId}`);
     return questionType === 'FREETEXT' ? '' : []; 
   }
-
-  console.log(`Found formAnswer for questionId: ${questionId}`, formAnswer);
 
   if (questionType === 'SINGLE' || questionType === 'MULTIPLE') {
     return formAnswer.chosenAnswerIndexes ?? []; 
