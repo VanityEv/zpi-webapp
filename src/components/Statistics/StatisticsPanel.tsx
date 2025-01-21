@@ -32,7 +32,7 @@ export type SummaryDataType = {
 export type AnswersDataType = {
   id: string;
   filledOutAt: string;
-  formAnswers: { questionId: string; chosenAnswerIndexes: number[] }[];
+  formAnswers: { questionId: string; chosenAnswerIndexes?: number[]; freetextAnswer?: string }[];
   respondentData: {
     userEmail: string;
     birthdate: string;
