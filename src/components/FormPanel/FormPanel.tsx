@@ -67,6 +67,13 @@ type SubmitPayload = {
   }[];
 };
 
+type SurveysData = {
+    link: string;
+    title: string;
+    closingTime: string;
+    userEmail: string;
+}
+
 // We change the superRefine messages to "This field is required."
 function buildFormSchema(questions: Question[], isPersonalDataRequired: boolean): ZodType<FormInput> {
   return z
@@ -152,6 +159,13 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
       try {
         const response = await axiosRequest('GET', `forms/${formID}`, undefined, getAuthHeader());
         const data: FormResponse = response?.data;
+        const userCreatedResponse = await axiosRequest('GET', `forms/user-created`, undefined, getAuthHeader());
+        const userCreatedSurveyData = userCreatedResponse?.data as SurveysData[]
+        if(userCreatedSurveyData.filter(data => data.link === formID).length > 0) {
+          toast.error("You can't answer your own survey");
+          navigate('/');
+          return;
+        }
         if (new Date() > new Date(data.closingTime)) {
           toast.error('Survey is already closed!');
           navigate('/');
