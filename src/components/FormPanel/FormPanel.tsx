@@ -20,6 +20,7 @@ import { toast } from 'react-toastify';
 import { getAuthHeader } from '../../utils/utils';
 import { z, ZodType } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 
 interface FormPanelProps {
   formID?: string;
@@ -133,6 +134,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
   const [formData, setFormData] = useState<FormResponse | null>(null);
   const [schema, setSchema] = useState<ZodType<FormInput> | null>(null);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const navigate = useNavigate();
 
   const {
     control,
@@ -150,6 +152,11 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
       try {
         const response = await axiosRequest('GET', `forms/${formID}`, undefined, getAuthHeader());
         const data: FormResponse = response?.data;
+        if (new Date() > new Date(data.closingTime)) {
+          toast.error('Survey is already closed!');
+          navigate('/');
+          return;
+        }
         setFormData(data);
 
         // Initialize default answers
