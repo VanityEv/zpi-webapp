@@ -10,9 +10,9 @@ import { getAuthHeader } from '../utils/utils';
 import { ApplicationBar } from '../components/AppBar/AppBar';
 import { toast } from 'react-toastify';
 
-const ResponseList = () => {
+const ResponseList = ({ requestedByUser }: { requestedByUser?: boolean }) => {
   const [questions, setQuestions] = useState<FormResponse>({} as FormResponse);
-  const [answersData, setAnswersData] = useState<AnswersDataType>([]);
+  const [answersData, setAnswersData] = useState<AnswersDataType[] | AnswersDataType & {linkId: string}>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const { axiosRequest } = useAxios();
@@ -22,11 +22,20 @@ const ResponseList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const questionListResponse = await axiosRequest('GET', `forms/${formId}`, null, getAuthHeader());
-        setQuestions(questionListResponse?.data);
-
-        const answersResponse = await axiosRequest('GET', `forms/${formId}/answers`, null, getAuthHeader());
+        let answersResponse
+        let questionListResponse
+        if(requestedByUser) {
+        answersResponse = await axiosRequest('GET', `forms/answer/${formId}`, null, getAuthHeader());
+        const questionListFormId = !Array.isArray(answersResponse?.data) ? answersResponse?.data.linkId : '';
+        questionListResponse = await axiosRequest('GET', `forms/${questionListFormId}`, null, getAuthHeader());
+        }
+        else {
+        answersResponse = await axiosRequest('GET', `forms/${formId}/answers`, null, getAuthHeader());
+        questionListResponse = await axiosRequest('GET', `forms/${formId}`, null, getAuthHeader());
+        }
         setAnswersData(answersResponse?.data);
+
+        setQuestions(questionListResponse?.data);
 
         setLoading(false);
       } catch (error) {
@@ -40,7 +49,7 @@ const ResponseList = () => {
     };
 
     fetchData();
-  }, [axiosRequest, formId]);
+  }, [axiosRequest, formId, requestedByUser]);
 
   if (loading) {
     return (
@@ -73,7 +82,16 @@ const ResponseList = () => {
     <>
       <ApplicationBar />
       <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt="5rem">
-        <SurveyViewer questions={questions} answersData={answersData} readOnly={true} />
+        {requestedByUser ? (
+          <SurveyViewer
+            questions={questions}
+            answersData={[answersData as AnswersDataType]}
+            readOnly={true}
+            requestedByUser={true}
+          />
+        ) : (
+          <SurveyViewer questions={questions} answersData={answersData as AnswersDataType[]} readOnly={true} />
+        )}
       </Box>
     </>
   );

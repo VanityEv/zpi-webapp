@@ -128,6 +128,7 @@ function App() {
               <Route path="/responses" element={<Responses />} />
               <Route path="/response/:formID" element={<Responses />} />
               <Route path="/responses/:formID/answers" element={<ResponseList />} />
+              <Route path="/response/:formID/my-answer" element={<ResponseList requestedByUser={true}/>}/>
               <Route path="/manage-users" element={<ManageUsers />} />
             </Routes>
           </Router>

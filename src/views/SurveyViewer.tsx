@@ -19,11 +19,12 @@ import { AnswersDataType } from '../components/Statistics/StatisticsPanel';
 
 interface SurveyViewerProps {
   questions: FormResponse;
-  answersData: AnswersDataType;
+  answersData: AnswersDataType[];
   readOnly: boolean;
+  requestedByUser?:boolean
 }
 
-export const SurveyViewer = ({ questions, answersData, readOnly }: SurveyViewerProps) => {
+export const SurveyViewer = ({ questions, answersData, readOnly, requestedByUser }: SurveyViewerProps) => {
   const [selectedEmail, setSelectedEmail] = useState<string | null>(answersData[0].respondentData.userEmail);
 
   const emails = Array.from(new Set(answersData.map(answer => answer.respondentData.userEmail)));
@@ -44,9 +45,9 @@ export const SurveyViewer = ({ questions, answersData, readOnly }: SurveyViewerP
       <Card sx={{ marginBottom: 3, boxShadow: '0px 4px 12px rgba(25, 118, 210, 0.4)', borderRadius: '25px' }}>
         <CardContent>
           <Typography variant="h5" sx={{ mb: '2rem' }}>
-            Survey Responses
+            {requestedByUser ? 'Survey Response': 'Survey Responses'}
           </Typography>
-
+          {!requestedByUser && (
           <FormControl fullWidth sx={{ marginBottom: 3 }}>
             <InputLabel>Select an Email</InputLabel>
             <Select
@@ -66,6 +67,7 @@ export const SurveyViewer = ({ questions, answersData, readOnly }: SurveyViewerP
               ))}
             </Select>
           </FormControl>
+          )}
 
           <Divider sx={{ marginBottom: 2 }} />
 

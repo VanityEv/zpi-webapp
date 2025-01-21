@@ -90,7 +90,7 @@ export const AnswersOverview = (props: AnswersOverviewProps) => {
 
       <Box display="flex" justifyContent="center" mt={2}>
         <Button
-          href={`/response/${props.link}`}
+          href={`/response/${props.link}/my-answer`}
           variant="outlined"
           color="primary"
           size="medium"

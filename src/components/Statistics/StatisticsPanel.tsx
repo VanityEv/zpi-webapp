@@ -38,11 +38,11 @@ export type AnswersDataType = {
     birthdate: string;
     gender: string;
   };
-}[];
+};
 
 export const StatisticsPanel = () => {
   const { axiosRequest } = useAxios();
-  const [answersData, setAnswersData] = useState<AnswersDataType>([]);
+  const [answersData, setAnswersData] = useState<AnswersDataType[]>([]);
   const [demographicData, setDemographicData] = useState<DemographicDataType>({} as DemographicDataType);
   const [summaryData, setSummaryData] = useState<SummaryDataType>({} as SummaryDataType);
   const [questionList, setQuestionList] = useState<Question[]>([]);
