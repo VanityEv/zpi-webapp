@@ -16,7 +16,6 @@ export const Home = () => {
   const fetchUserSurveys = useCallback(async () => {
     try {
       const response = await axiosRequest('GET', 'forms/user-created', null, getAuthHeader());
-      console.log(response);
       return response?.data || [];
     } catch {
       return [];

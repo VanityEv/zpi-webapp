@@ -58,7 +58,6 @@ export const StatisticsPanel = () => {
       setSummaryData(summaryReponse?.data);
 
       const demographicResponse = await axiosRequest('GET', `forms/${formId}/demographic`, null, getAuthHeader());
-      console.log(demographicResponse);
       setDemographicData(demographicResponse?.data);
 
       const questionListResponse = await axiosRequest('GET', `forms/${formId}`, null, getAuthHeader());
