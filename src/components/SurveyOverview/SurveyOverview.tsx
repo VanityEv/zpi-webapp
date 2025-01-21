@@ -183,7 +183,7 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: {xs:'column', sm: 'row'}, justifyContent: 'space-evenly' }}>
+      <Box sx={{ display: 'flex', flexDirection: {xs:'column', xl: 'row'}, justifyContent: 'space-evenly' }}>
         <Tooltip
           title={summaryData.totalResponses === 0 ? 'No responses available yet' : 'View detailed statistics'}
           arrow
@@ -215,10 +215,11 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
         <Box display="flex" justifyContent="center" mt={3}>
           <Tooltip title="Copy Survey URL" arrow>
             <Button
+            disabled={!isActive}
               onClick={handleCopyToClipboard}
+              variant='contained'
               sx={{
-                backgroundColor: '#1976d2',
-                color: '#fff',
+                color: '#ffffff',
                 borderRadius: '20px',
                 padding: '8px 24px',
                 boxShadow: '0px 4px 12px rgba(25, 118, 210, 0.4)',

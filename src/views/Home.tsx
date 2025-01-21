@@ -12,6 +12,7 @@ export const Home = () => {
   const navigate = useNavigate();
   const [userSurveysData, setUserSurveysData] = useState<SurveyOverviewProps[]>([]);
   const { axiosRequest } = useAxios();
+  console.log(userSurveysData)
 
   const fetchUserSurveys = useCallback(async () => {
     try {
@@ -66,7 +67,7 @@ export const Home = () => {
           gap: 4,
         }}
       >
-        {userSurveysData.length ? (
+        {userSurveysData.length !== 0 ? (
           userSurveysData.filter(filterCondition).map(survey => <SurveyOverview key={survey.link} {...survey} />)
         ) : (
           <Typography align="center">No surveys available.</Typography>

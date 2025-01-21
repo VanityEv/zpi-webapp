@@ -51,7 +51,7 @@ export const RegisterPanel = () => {
         lastname: data.lastname,
         email: data.email,
         password: data.password,
-        birthdate: data.birthdate.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+        birthdate: data.birthdate.toISOString().split('T')[0], 
         gender: data.gender,
       };
       const response = await axiosRequest('POST', 'auth/register', payload);

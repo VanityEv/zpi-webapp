@@ -3,7 +3,7 @@ import { Box, Typography, useMediaQuery } from '@mui/material';
 
 interface SurveyPieChartProps {
   title: string;
-  data: Record<string, number>; // Obiekt z wartościami demograficznymi
+  data: Record<string, number>;
 }
 
 export default function SurveyPieChart({ title, data }: SurveyPieChartProps) {
