@@ -1,4 +1,4 @@
-import { Box, Typography, Stack, TextField, Button, Link, FormControlLabel, Switch, Divider } from '@mui/material';
+import { Box, Typography, Stack, TextField, Button, Link, Divider } from '@mui/material';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -166,7 +166,7 @@ export const CreateFormPanel = () => {
         )}
       />
 
-      <Controller
+      {/* <Controller
         name="isPersonalDataRequired"
         control={control}
         render={({ field }) => (
@@ -175,7 +175,7 @@ export const CreateFormPanel = () => {
             label="Is Personal Data Required?"
           />
         )}
-      />
+      /> */}
 
       <Divider />
 
