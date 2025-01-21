@@ -1,13 +1,5 @@
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  IconButton,
-  FormControlLabel,
-  Switch,
-  MenuItem
-} from '@mui/material';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Box, Typography, TextField, Button, IconButton, FormControlLabel, Switch, MenuItem } from '@mui/material';
 import { Controller, useFieldArray, useWatch } from 'react-hook-form';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -21,22 +13,16 @@ interface QuestionItemProps {
   errors: any;
 }
 
-export function QuestionItem({
-  control,
-  register,
-  questionIndex,
-  field,
-  removeQuestion,
-  errors,
-}: QuestionItemProps) {
+export function QuestionItem({ control, register, questionIndex, field, removeQuestion, errors }: QuestionItemProps) {
   const questionType = useWatch({
     control,
     name: `questions.${questionIndex}.questionType`,
     defaultValue: 'FREETEXT',
   });
+
   const {
-    fields: answersFields,
-    append: appendAnswer,
+    fields: possibleAnswers,
+    append: addAnswer,
     remove: removeAnswer,
   } = useFieldArray({
     control,
@@ -45,7 +31,7 @@ export function QuestionItem({
 
   return (
     <Box key={field.id} sx={{ width: '100%', mb: 3 }}>
-      {/* Tekst pytania */}
+      {/* Question Text */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         <TextField
           fullWidth
@@ -65,16 +51,13 @@ export function QuestionItem({
         </IconButton>
       </Box>
 
+      {/* Question Type Dropdown */}
       <Controller
         name={`questions.${questionIndex}.questionType`}
         control={control}
         defaultValue="FREETEXT"
         render={({ field }) => (
-          <TextField
-            select
-            label="Typ pytania"
-            {...field}
-          >
+          <TextField select label="Question Type" {...field}>
             <MenuItem value="FREETEXT">Text Answer</MenuItem>
             <MenuItem value="SINGLE">Single Choice Answer</MenuItem>
             <MenuItem value="MULTIPLE">Multiple Choice Answer</MenuItem>
@@ -82,16 +65,14 @@ export function QuestionItem({
         )}
       />
 
+      {/* Required Switch */}
       <FormControlLabel
         control={
           <Controller
             name={`questions.${questionIndex}.required`}
             control={control}
             render={({ field: switchField }) => (
-              <Switch
-                checked={switchField.value}
-                onChange={(e) => switchField.onChange(e.target.checked)}
-              />
+              <Switch checked={switchField.value} onChange={e => switchField.onChange(e.target.checked)} />
             )}
           />
         }
@@ -99,13 +80,13 @@ export function QuestionItem({
         sx={{ mb: 2 }}
       />
 
-      {/* Possible Answers (only if SINGLE or MULTIPLE) */}
+      {/* Possible Answers (only for SINGLE or MULTIPLE question types) */}
       {questionType !== 'FREETEXT' && (
         <Box>
           <Typography variant="subtitle1">Possible Answers</Typography>
-          {answersFields.map((ansField, ansIndex) => (
+          {possibleAnswers.map((answer, answerIndex) => (
             <Box
-              key={ansField.id}
+              key={answer.id}
               sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -114,17 +95,15 @@ export function QuestionItem({
             >
               <TextField
                 fullWidth
-                label={`Answer ${ansIndex + 1}`}
-                error={Boolean(errors?.questions?.[questionIndex]?.possibleAnswers?.[ansIndex])}
-                helperText={
-                  errors?.questions?.[questionIndex]?.possibleAnswers?.[ansIndex]?.message
-                }
-                {...register(`questions.${questionIndex}.possibleAnswers.${ansIndex}`)}
+                label={`Answer ${answerIndex + 1}`}
+                error={Boolean(errors?.questions?.[questionIndex]?.possibleAnswers?.[answerIndex])}
+                helperText={errors?.questions?.[questionIndex]?.possibleAnswers?.[answerIndex]?.message}
+                {...register(`questions.${questionIndex}.possibleAnswers.${answerIndex}`)}
               />
               <IconButton
                 aria-label="remove-answer"
                 color="error"
-                onClick={() => removeAnswer(ansIndex)}
+                onClick={() => removeAnswer(answerIndex)}
                 sx={{ ml: 1 }}
               >
                 <RemoveIcon />
@@ -135,7 +114,7 @@ export function QuestionItem({
           <Button
             variant="contained"
             startIcon={<AddIcon />}
-            onClick={() => appendAnswer('')}
+            onClick={() => addAnswer('')}
             color="success"
             sx={{ mt: 1, minWidth: '200px' }}
           >

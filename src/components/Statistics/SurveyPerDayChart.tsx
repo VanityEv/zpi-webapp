@@ -1,30 +1,22 @@
-import { Box, Typography, Button, useMediaQuery } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { useState } from 'react';
+import { SummaryDataType } from './StatisticsPanel';
 
-export default function SurveysPerDayChart() {
-  const generateConsecutiveDates = (count: number) => {
-    const today = new Date();
+export default function SurveysPerDayChart({ dailyResponses }: { dailyResponses: SummaryDataType['dailyResponses'] }) {
+  const generateConsecutiveDates = (count: number, startDate: string) => {
     return Array.from({ length: count }, (_, i) => {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
+      const date = new Date(startDate);
+      date.setDate(date.getDate() + i);
       return date.toISOString().split('T')[0];
     });
   };
 
-  const [chartData, setChartData] = useState({
-    dates: generateConsecutiveDates(14),
-    values: Array.from({ length: 14 }, () => Math.ceil(Math.random() * 10)),
-  });
-
-  const randomizeData = () => {
-    setChartData({
-      dates: generateConsecutiveDates(14),
-      values: Array.from({ length: 14 }, () => Math.floor(Math.random() * 10) + 1),
-    });
+  const sortedData = dailyResponses.sort((a, b) => a.date.localeCompare(b.date));
+  const chartData = {
+    dates: generateConsecutiveDates(dailyResponses.length ?? 1, sortedData[0].date),
+    values: sortedData.map(response => response.responseCount),
   };
 
-  // Use media query to determine screen size
   const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
   return (
@@ -32,9 +24,7 @@ export default function SurveysPerDayChart() {
       <Typography variant="h5" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         Surveys Completed / Day
       </Typography>
-      <Button onClick={randomizeData} variant="contained" color="primary" sx={{ width: '140px', mb: 3 }}>
-        Randomize Data
-      </Button>
+
       <Box sx={{ width: '100%', height: '100%', minHeight: '25vh' }}>
         <LineChart
           xAxis={[
@@ -44,13 +34,19 @@ export default function SurveysPerDayChart() {
               scaleType: 'band',
             },
           ]}
+          yAxis={[
+            {
+              id: 'responseCounts',
+              min: 0,
+            },
+          ]}
           series={[
             {
               data: chartData.values,
             },
           ]}
-          width={isSmallScreen ? 425 : 1000} // Adjust width based on screen size
-          height={isSmallScreen ? 350 : 500} // Adjust height based on screen size
+          width={isSmallScreen ? 425 : 1000}
+          height={isSmallScreen ? 350 : 500}
         />
       </Box>
     </Box>

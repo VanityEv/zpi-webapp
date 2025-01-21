@@ -12,6 +12,7 @@ import { Form } from './views/form/Form';
 import { ToastContainer } from 'react-toastify';
 import { Responses } from './views/Responses';
 import { ManageUsers } from './views/ManageUsers';
+import ResponseList from './views/ResponseList';
 
 function App() {
   const theme = useMemo(
@@ -125,10 +126,12 @@ function App() {
               <Route path="/statistics/:formID" element={<Statistics />} />
               <Route path="/form/:formID" element={<Form />} />
               <Route path="/responses" element={<Responses />} />
-              <Route path="/manage-users" element={<ManageUsers/>}/>
+              <Route path="/response/:formID" element={<Responses />} />
+              <Route path="/responses/:formID/answers" element={<ResponseList />} />
+              <Route path="/manage-users" element={<ManageUsers />} />
             </Routes>
           </Router>
-          <ToastContainer position='bottom-right' />
+          <ToastContainer position="bottom-right" />
         </Box>
       </LocalizationProvider>
     </ThemeProvider>

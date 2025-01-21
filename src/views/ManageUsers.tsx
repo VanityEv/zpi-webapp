@@ -16,7 +16,7 @@ import { ApplicationBar } from '../components/AppBar/AppBar';
 import { getAuthHeader } from '../utils/utils';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import { KeyboardDoubleArrowUp, Delete } from '@mui/icons-material';
+import { KeyboardDoubleArrowUp, Delete, KeyboardDoubleArrowDown } from '@mui/icons-material';
 import { getCookie } from 'typescript-cookie';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,9 +32,9 @@ export const ManageUsers = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!getCookie('token') || !(getCookie('role') === 'ADMIN')) {
-      toast.error('Unauthorized!')
-      navigate('/')
+    if (!getCookie('token') || !(getCookie('role') === 'ADMIN')) {
+      toast.error('Unauthorized!');
+      navigate('/');
       return;
     }
     const fetchUsers = async () => {
@@ -66,6 +66,34 @@ export const ManageUsers = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error('Error occurred while promoting user.');
+      }
+    }
+  };
+  const demoteUser = async (email: string) => {
+    try {
+      const response = await axiosRequest('PATCH', `admin/users/demote/${email}`, null, getAuthHeader());
+      if (response?.status === 200) {
+        toast.success(`${email} has been demoted from admin.`);
+        setUsers(prevUsers => prevUsers.map(user => (user.email === email ? { ...user, role: 'USER' } : user)));
+      } else {
+        toast.error(`Failed to demote ${email}.`);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        switch (error.code) {
+          case '401': {
+            toast.error('Error occurred while demoting user. Unauthorized!');
+            break;
+          }
+          case '404': {
+            toast.error('Error occurred while demoting user. User not found!');
+            break;
+          }
+          default: {
+            toast.error('Error occurred while demoting user.');
+            break;
+          }
+        }
       }
     }
   };
@@ -118,16 +146,28 @@ export const ManageUsers = () => {
                   <TableCell>{user.role}</TableCell>
                   <TableCell>
                     {user.role === 'USER' && (
-                      <IconButton onClick={() => promoteUser(user.email)}>
-                        <KeyboardDoubleArrowUp sx={{ color: 'green', mr: 2 }} />
-                        <Typography variant="body1">Promote</Typography>
-                      </IconButton>
+                      <>
+                        <IconButton onClick={() => promoteUser(user.email)}>
+                          <KeyboardDoubleArrowUp sx={{ color: 'green', mr: 2 }} />
+                          <Typography variant="body1">Promote</Typography>
+                        </IconButton>
+                        <IconButton disabled onClick={() => demoteUser(user.email)}>
+                          <KeyboardDoubleArrowDown sx={{ color: 'red', mr: 2 }} />
+                          <Typography variant="body1">Demote</Typography>
+                        </IconButton>
+                      </>
                     )}
                     {user.role === 'ADMIN' && (
-                      <IconButton disabled>
-                        <KeyboardDoubleArrowUp sx={{ mr: 2 }} />
-                        <Typography variant="body1">Promote</Typography>
-                      </IconButton>
+                      <>
+                        <IconButton disabled>
+                          <KeyboardDoubleArrowUp sx={{ mr: 2 }} />
+                          <Typography variant="body1">Promote</Typography>
+                        </IconButton>
+                        <IconButton onClick={() => demoteUser(user.email)}>
+                          <KeyboardDoubleArrowDown sx={{ color: 'red', mr: 2 }} />
+                          <Typography variant="body1">Demote</Typography>
+                        </IconButton>
+                      </>
                     )}
                   </TableCell>
                   {user.role === 'USER' ? (

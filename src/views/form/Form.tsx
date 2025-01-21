@@ -8,10 +8,10 @@ export const Form = () => {
 
   return (
     <>
-    <ApplicationBar/>
-    <Box sx={{ height: '100%', width: '100%' }}>
-      <FormPanel formID={formID} />
-    </Box>
+      <ApplicationBar />
+      <Box sx={{ height: '100%', width: '100%' }}>
+        <FormPanel formID={formID} />
+      </Box>
     </>
   );
 };

@@ -10,7 +10,7 @@ import {
   Checkbox,
   FormGroup,
   Select,
-  MenuItem
+  MenuItem,
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import useAxios from '../../hooks/useAxios';
@@ -25,7 +25,7 @@ interface FormPanelProps {
   formID?: string;
 }
 
-type Question = {
+export type Question = {
   id: string;
   questionType: 'FREETEXT' | 'SINGLE' | 'MULTIPLE';
   required: boolean;
@@ -33,7 +33,7 @@ type Question = {
   possibleAnswers: string[];
 };
 
-type FormResponse = {
+export type FormResponse = {
   link: string;
   title: string;
   closingTime: string;
@@ -67,10 +67,7 @@ type SubmitPayload = {
 };
 
 // We change the superRefine messages to "This field is required."
-function buildFormSchema(
-  questions: Question[],
-  isPersonalDataRequired: boolean
-): ZodType<FormInput> {
+function buildFormSchema(questions: Question[], isPersonalDataRequired: boolean): ZodType<FormInput> {
   return z
     .object({
       birthDate: z.string().optional(),
@@ -79,9 +76,9 @@ function buildFormSchema(
         z.object({
           questionId: z.string(),
           freetextAnswer: z.string().optional(),
-          chosenAnswerIndexes: z.array(z.number())
+          chosenAnswerIndexes: z.array(z.number()),
         })
-      )
+      ),
     })
     .superRefine((values, ctx) => {
       questions.forEach((q, i) => {
@@ -95,7 +92,7 @@ function buildFormSchema(
               ctx.addIssue({
                 code: z.ZodIssueCode.custom,
                 message: 'This field is required.',
-                path: ['answers', i, 'freetextAnswer']
+                path: ['answers', i, 'freetextAnswer'],
               });
             }
           } else {
@@ -104,7 +101,7 @@ function buildFormSchema(
               ctx.addIssue({
                 code: z.ZodIssueCode.custom,
                 message: 'This field is required.',
-                path: ['answers', i, 'chosenAnswerIndexes']
+                path: ['answers', i, 'chosenAnswerIndexes'],
               });
             }
           }
@@ -117,14 +114,14 @@ function buildFormSchema(
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: 'This field is required.',
-            path: ['birthDate']
+            path: ['birthDate'],
           });
         }
         if (!values.gender) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: 'This field is required.',
-            path: ['gender']
+            path: ['gender'],
           });
         }
       }
@@ -141,11 +138,11 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
   } = useForm<FormInput>({
     resolver: schema ? zodResolver(schema) : undefined,
     defaultValues: { answers: [], birthDate: '', gender: '' },
-    mode: 'onSubmit'
+    mode: 'onSubmit',
   });
 
   useEffect(() => {
@@ -156,10 +153,10 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
         setFormData(data);
 
         // Initialize default answers
-        const defaultAnswers = data.questions.map((q) => ({
+        const defaultAnswers = data.questions.map(q => ({
           questionId: q.id,
           freetextAnswer: '',
-          chosenAnswerIndexes: []
+          chosenAnswerIndexes: [],
         }));
         setValue('answers', defaultAnswers);
 
@@ -195,7 +192,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
             return { questionId: q.id, freetextAnswer };
           }
           return { questionId: q.id, chosenAnswerIndexes };
-        })
+        }),
       };
 
       if (formData.isPersonalDataRequired) {
@@ -223,7 +220,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
           height: '100%',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         <Typography>Loading form...</Typography>
@@ -239,7 +236,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
           height: '100%',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         <Typography variant="h6" color="success.main" sx={{ mb: 2 }}>
@@ -314,12 +311,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
             return (
               <RadioGroup value={selectedIndexes[0] ?? ''} onChange={handleRadioChange}>
                 {q.possibleAnswers.map((ans, ansIndex) => (
-                  <FormControlLabel
-                    key={ansIndex}
-                    value={ansIndex}
-                    control={<Radio />}
-                    label={ans}
-                  />
+                  <FormControlLabel key={ansIndex} value={ansIndex} control={<Radio />} label={ans} />
                 ))}
               </RadioGroup>
             );
@@ -337,7 +329,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
             const selectedIndexes = field.value || [];
             const handleCheckChange = (ansIndex: number) => {
               if (selectedIndexes.includes(ansIndex)) {
-                field.onChange(selectedIndexes.filter((i) => i !== ansIndex));
+                field.onChange(selectedIndexes.filter(i => i !== ansIndex));
               } else {
                 field.onChange([...selectedIndexes, ansIndex]);
               }
@@ -378,7 +370,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
         width: '100%',
         maxWidth: { xs: '85%', sm: '50%' },
         px: 2,
-        minHeight: '100vh'
+        minHeight: '100vh',
       }}
     >
       <Typography component="h1" variant="h5" sx={{ mt: 4, mb: 2, textAlign: 'center' }}>
@@ -412,12 +404,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
                 name="gender"
                 control={control}
                 render={({ field }) => (
-                  <Select
-                    {...field}
-                    fullWidth
-                    displayEmpty
-                    error={Boolean(errors.gender)}
-                  >
+                  <Select {...field} fullWidth displayEmpty error={Boolean(errors.gender)}>
                     <MenuItem value="">Select gender</MenuItem>
                     <MenuItem value="MALE">Male</MenuItem>
                     <MenuItem value="FEMALE">Female</MenuItem>
@@ -455,7 +442,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
                 px: 8,
                 width: { xs: '80%', sm: 'auto' },
                 m: 'auto',
-                display: 'block'
+                display: 'block',
               }}
             >
               Submit

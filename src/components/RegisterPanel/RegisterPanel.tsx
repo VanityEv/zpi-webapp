@@ -138,7 +138,7 @@ export const RegisterPanel = () => {
               <DatePicker
                 label="Birthdate"
                 value={field.value ? moment(field.value) : null}
-                onChange={(newValue) => field.onChange(newValue ? newValue.toDate() : null)}
+                onChange={newValue => field.onChange(newValue ? newValue.toDate() : null)}
                 slots={{ textField: TextField }}
                 slotProps={{
                   textField: {
