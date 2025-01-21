@@ -184,7 +184,7 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+      <Box sx={{ display: 'flex', flexDirection: {xs:'column', sm: 'row'}, justifyContent: 'space-evenly' }}>
         <Tooltip
           title={summaryData.totalResponses === 0 ? 'No responses available yet' : 'View detailed statistics'}
           arrow
