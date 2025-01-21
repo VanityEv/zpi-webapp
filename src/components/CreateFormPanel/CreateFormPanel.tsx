@@ -41,7 +41,7 @@ export const CreateFormPanel = () => {
           questionType: z.enum(['FREETEXT', 'SINGLE', 'MULTIPLE']),
           required: z.boolean(),
           questionText: z.string().min(1, { message: 'Question cannot be empty.' }),
-          possibleAnswers: z.array(z.string()).min(1, {message:'At least one answer is required'}),
+          possibleAnswers: z.array(z.string())
         })
       )
       .min(1, { message: 'At least one question is required.' }),
