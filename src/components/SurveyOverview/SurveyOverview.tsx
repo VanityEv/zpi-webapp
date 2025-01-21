@@ -240,6 +240,7 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
             <Button
               href={`/responses/${props.link}/answers`}
               disabled={summaryData.totalResponses === 0}
+              variant='contained'
               sx={{
                 backgroundColor: '#1976d2',
                 color: '#fff',
