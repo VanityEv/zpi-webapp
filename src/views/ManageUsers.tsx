@@ -163,7 +163,7 @@ export const ManageUsers = () => {
                           <KeyboardDoubleArrowUp sx={{ mr: 2 }} />
                           <Typography variant="body1">Promote</Typography>
                         </IconButton>
-                        <IconButton onClick={() => demoteUser(user.email)}>
+                        <IconButton onClick={() => demoteUser(user.email)} disabled={user.role === 'ADMIN' && user.email === 'admin@admin.com'}>
                           <KeyboardDoubleArrowDown sx={{ color: 'red', mr: 2 }} />
                           <Typography variant="body1">Demote</Typography>
                         </IconButton>
