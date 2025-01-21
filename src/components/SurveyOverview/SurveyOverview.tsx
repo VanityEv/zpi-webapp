@@ -47,7 +47,7 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
     const response = await axiosRequest(
       'PATCH',
       `forms/${props.link}/closing-time`,
-      { newClosingTime: newEndDate?.toISOString() },
+      { newClosingTime: newEndDate },
       getAuthHeader()
     );
 
@@ -158,7 +158,7 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
             End Date
           </Typography>
           <Typography variant="body2" sx={{ color: '#333' }}>
-            {new Date(closingDate).toISOString().split('T')[0]}
+            {closingDate}
           </Typography>
         </Box>
       </Box>
