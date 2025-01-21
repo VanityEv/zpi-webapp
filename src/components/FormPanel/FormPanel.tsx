@@ -184,7 +184,7 @@ export const FormPanel = ({ formID }: FormPanelProps) => {
       }
     };
     if (formID) fetchForm();
-  }, [formID, axiosRequest, setValue]);
+  }, [formID, axiosRequest, setValue, navigate]);
 
   const onSubmit = async (data: FormInput) => {
     try {

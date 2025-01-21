@@ -158,7 +158,7 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
             End Date
           </Typography>
           <Typography variant="body2" sx={{ color: '#333' }}>
-            {closingDate}
+            {moment(closingDate).format('DD-MM-YYYY') === 'Invalid date' ? closingDate : moment(closingDate).format('DD-MM-YYYY')}
           </Typography>
         </Box>
       </Box>
@@ -239,6 +239,7 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
           <Tooltip title="See All Responses" arrow>
             <Button
               href={`/responses/${props.link}/answers`}
+              disabled={summaryData.totalResponses === 0}
               sx={{
                 backgroundColor: '#1976d2',
                 color: '#fff',
