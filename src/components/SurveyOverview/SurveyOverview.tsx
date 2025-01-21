@@ -159,7 +159,7 @@ export const SurveyOverview = (props: SurveyOverviewProps) => {
             End Date
           </Typography>
           <Typography variant="body2" sx={{ color: '#333' }}>
-            {closingDate}
+            {new Date(closingDate).toISOString().split('T')[0]}
           </Typography>
         </Box>
       </Box>
