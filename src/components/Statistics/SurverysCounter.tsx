@@ -1,14 +1,12 @@
-import { Box, Button, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Box, Typography } from '@mui/material';
 
-export const SurveyCounter = () => {
-  const [data, setData] = useState({ count: 0, avgDailyCount: 0 });
-
-  const randomizeData = () => {
-    const randomCount = Math.floor(Math.random() * 100);
-    setData({ count: randomCount, avgDailyCount: Number((randomCount / 7).toFixed(0)) });
-  };
-
+export const SurveyCounter = ({
+  avgResponsesPerDay,
+  totalResponses,
+}: {
+  avgResponsesPerDay: number;
+  totalResponses: number;
+}) => {
   return (
     <Box
       sx={{
@@ -27,21 +25,6 @@ export const SurveyCounter = () => {
         Survey Completion Stats
       </Typography>
 
-      <Button
-        onClick={randomizeData}
-        variant="contained"
-        color="primary"
-        sx={{
-          mb: 3,
-          borderRadius: 2,
-          padding: '10px 20px',
-          fontWeight: 500,
-          boxShadow: 2,
-        }}
-      >
-        Randomize Data
-      </Button>
-
       <Box
         sx={{
           display: 'flex',
@@ -57,7 +40,7 @@ export const SurveyCounter = () => {
             Overall Surveys Completed
           </Typography>
           <Typography variant="h3" sx={{ fontWeight: 600 }}>
-            {data.count}
+            {totalResponses}
           </Typography>
         </Box>
         <Box sx={{ textAlign: 'center', flex: 1 }}>
@@ -65,7 +48,7 @@ export const SurveyCounter = () => {
             Average Daily Surveys Completed
           </Typography>
           <Typography variant="h3" sx={{ fontWeight: 600 }}>
-            {data.avgDailyCount}
+            {avgResponsesPerDay}
           </Typography>
         </Box>
       </Box>

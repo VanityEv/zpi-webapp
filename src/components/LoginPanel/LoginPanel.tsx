@@ -35,22 +35,22 @@ export const LoginPanel = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const decodeJWT = (token: string): any | null => {
-  try {
-    const payload = token.split('.')[1];
-    const decodedPayload = atob(payload); 
-    return JSON.parse(decodedPayload).roles.includes('ROLE_ADMIN')
-  } catch (error) {
-    console.error('Error decoding token:', error);
-    return null;
-  }
-};
+    try {
+      const payload = token.split('.')[1];
+      const decodedPayload = atob(payload);
+      return JSON.parse(decodedPayload).roles.includes('ROLE_ADMIN');
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  };
 
   const onSubmit = async (data: Schema) => {
     try {
       const response = await axiosRequest('POST', 'auth/authenticate', data);
       toast.success('Login successful!');
-      const isAdmin = decodeJWT(response?.data.access_token)
-      setCookie('role', isAdmin ? 'ADMIN' : 'USER')
+      const isAdmin = decodeJWT(response?.data.access_token);
+      setCookie('role', isAdmin ? 'ADMIN' : 'USER');
       setCookie('token', response?.data.access_token);
       setCookie('email', response?.data.email);
       navigate('/');
@@ -68,7 +68,7 @@ export const LoginPanel = () => {
       sx={{
         display: 'flex',
         height: '100%',
-        width:'100%',
+        width: '100%',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',

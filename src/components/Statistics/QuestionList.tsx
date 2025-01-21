@@ -11,86 +11,24 @@ import {
   FormControl,
 } from '@mui/material';
 import { useState } from 'react';
+import { Question } from '../FormPanel/FormPanel';
 
-type MultipleChoiceQuestion = {
-  id: number;
-  text: string;
-  answers: string[];
-};
+export default function QuestionList({ questions }: { questions: Question[] }) {
+  const [viewType, setViewType] = useState<'SINGLE' | 'MULTIPLE' | 'FREETEXT'>('SINGLE');
 
-type OpenEndedQuestion = {
-  id: number;
-  text: string;
-};
+  const filteredQuestions = questions.filter(
+    q =>
+      (q.questionType === 'SINGLE' && viewType === 'SINGLE') ||
+      (q.questionType === 'MULTIPLE' && viewType === 'MULTIPLE') ||
+      (q.questionType === 'FREETEXT' && viewType === 'FREETEXT')
+  );
 
-export default function QuestionList() {
-  const [viewType, setViewType] = useState<'multipleChoice' | 'openEnded'>('multipleChoice');
-
-  const questions = {
-    multipleChoice: [
-      {
-        id: 1,
-        text: 'What is your favorite programming language?',
-        answers: ['JavaScript', 'Python', 'Java', 'C#'],
-      },
-      {
-        id: 2,
-        text: 'How satisfied are you with our service?',
-        answers: ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied'],
-      },
-      {
-        id: 3,
-        text: 'Which features do you use the most?',
-        answers: ['Search', 'Recommendations', 'Reports', 'User Management'],
-      },
-      {
-        id: 4,
-        text: 'How often do you use our platform?',
-        answers: ['Daily', 'Weekly', 'Monthly', 'Rarely'],
-      },
-      {
-        id: 5,
-        text: 'What is your preferred learning method?',
-        answers: ['Videos', 'Articles', 'Interactive Tutorials', 'Webinars'],
-      },
-      {
-        id: 6,
-        text: 'How likely are you to recommend us?',
-        answers: ['Very Likely', 'Likely', 'Neutral', 'Unlikely'],
-      },
-      {
-        id: 7,
-        text: 'What improvements can we make?',
-        answers: ['Better Support', 'New Features', 'Improved UI', 'More Tutorials'],
-      },
-      {
-        id: 8,
-        text: 'What is your primary reason for using our platform?',
-        answers: ['Work', 'Education', 'Hobby', 'Other'],
-      },
-      {
-        id: 9,
-        text: 'What do you value most about our service?',
-        answers: ['Speed', 'Accuracy', 'Ease of Use', 'Customer Support'],
-      },
-      {
-        id: 10,
-        text: 'What additional tools would you like us to provide?',
-        answers: ['Analytics', 'Scheduling', 'Collaboration', 'Export Options'],
-      },
-    ] as MultipleChoiceQuestion[],
-
-    openEnded: [
-      { id: 1, text: 'What do you think about our customer support?' },
-      { id: 2, text: 'How can we improve our product?' },
-      { id: 3, text: 'What additional features would you like to see?' },
-      { id: 4, text: 'What is your overall experience with the platform?' },
-      { id: 5, text: 'Please provide any other feedback.' },
-    ] as OpenEndedQuestion[],
-  };
+  const hasSingle = questions.some(q => q.questionType === 'SINGLE');
+  const hasMultiple = questions.some(q => q.questionType === 'MULTIPLE');
+  const hasFreeText = questions.some(q => q.questionType === 'FREETEXT');
 
   const handleViewChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setViewType(event.target.value as 'multipleChoice' | 'openEnded');
+    setViewType(event.target.value as 'SINGLE' | 'MULTIPLE' | 'FREETEXT');
   };
 
   return (
@@ -101,8 +39,9 @@ export default function QuestionList() {
 
       <FormControl component="fieldset" sx={{ mb: 3, display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
         <RadioGroup row aria-label="question type" value={viewType} onChange={handleViewChange}>
-          <FormControlLabel value="multipleChoice" control={<Radio />} label="Multiple Choice" />
-          <FormControlLabel value="openEnded" control={<Radio />} label="Open-Ended" />
+          <FormControlLabel value="SINGLE" control={<Radio />} label="Single Choice" disabled={!hasSingle} />
+          <FormControlLabel value="MULTIPLE" control={<Radio />} label="Multiple Choice" disabled={!hasMultiple} />
+          <FormControlLabel value="FREETEXT" control={<Radio />} label="Free Text" disabled={!hasFreeText} />
         </RadioGroup>
       </FormControl>
 
@@ -118,15 +57,15 @@ export default function QuestionList() {
         }}
       >
         <List>
-          {(viewType === 'multipleChoice' ? questions.multipleChoice : questions.openEnded).map((question, index) => (
+          {filteredQuestions.map((question, index) => (
             <Box key={question.id}>
               <ListItem>
-                <ListItemText primary={`Question ${index + 1}: ${question.text}`} />
+                <ListItemText primary={`Question: ${question.questionText}`} />
               </ListItem>
 
-              {viewType === 'multipleChoice' && (
+              {question.questionType === 'SINGLE' && (
                 <List sx={{ pl: 4 }}>
-                  {(question as MultipleChoiceQuestion).answers.map((answer, i) => (
+                  {question.possibleAnswers.map((answer, i) => (
                     <ListItem key={i} sx={{ display: 'list-item', py: 0 }}>
                       <ListItemText primary={`${String.fromCharCode(65 + i)}. ${answer}`} />
                     </ListItem>
@@ -134,17 +73,23 @@ export default function QuestionList() {
                 </List>
               )}
 
-              {viewType === 'openEnded' && (
+              {question.questionType === 'MULTIPLE' && (
                 <List sx={{ pl: 4 }}>
-                  <ListItem>
-                    <ListItemText primary="Your Answer:" />
-                  </ListItem>
+                  {question.possibleAnswers.map((answer, i) => (
+                    <ListItem key={i} sx={{ display: 'list-item', py: 0 }}>
+                      <ListItemText primary={`${String.fromCharCode(65 + i)}. ${answer}`} />
+                    </ListItem>
+                  ))}
                 </List>
               )}
 
-              {index < (viewType === 'multipleChoice' ? questions.multipleChoice : questions.openEnded).length - 1 && (
-                <Divider sx={{ my: 2 }} />
+              {question.questionType === 'FREETEXT' && (
+                <ListItem sx={{ pl: 4 }}>
+                  <ListItemText primary="Free Text Question (type your answer)" />
+                </ListItem>
               )}
+
+              {index < filteredQuestions.length - 1 && <Divider sx={{ my: 2 }} />}
             </Box>
           ))}
         </List>
